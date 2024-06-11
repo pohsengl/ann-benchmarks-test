@@ -7,8 +7,14 @@ import sklearn.preprocessing
 
 from ..base.module import BaseANN
 
+from pathlib import Path
 
 class Faiss(BaseANN):
+
+    # seems like need to call save_local to save faiss index on-disk, otherwise it is in-memory
+    # https://github.com/langchain-ai/langchain/discussions/4188
+    dir_path = None
+
     def query(self, v, n):
         if self._metric == "angular":
             v /= numpy.linalg.norm(v)
@@ -112,6 +118,6 @@ class FaissIVFPQfs(Faiss):
 
     def get_additional(self):
         return {"dist_comps": faiss.cvar.indexIVF_stats.ndis + faiss.cvar.indexIVF_stats.nq * self._n_list}  # noqa
-
+ 
     def __str__(self):
         return "FaissIVFPQfs(n_list=%d, n_probe=%d, k_reorder=%d)" % (self._n_list, self._n_probe, self._k_reorder)
