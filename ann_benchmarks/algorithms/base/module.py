@@ -11,6 +11,9 @@ class BaseANN(object):
         """Clean up BaseANN once it is finished being used."""
         pass
 
+    def get_disk_usage(self):
+        return -1.0
+
     def get_memory_usage(self) -> Optional[float]:
         """Returns the current memory usage of this ANN algorithm instance in kilobytes.
 

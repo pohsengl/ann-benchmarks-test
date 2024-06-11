@@ -91,6 +91,8 @@ def index_size(queries, attrs):
     # TODO(erikbern): should replace this with peak memory usage or something
     return attrs.get("index_size", 0)
 
+def storage_size(queries, attrs):
+    return attrs.get("storage_size", 0)
 
 def build_time(queries, attrs):
     return attrs["build_time"]
@@ -203,4 +205,11 @@ all_metrics = {
         / queries_per_second(true_distances, run_attrs),  # noqa
         "worst": float("inf"),
     },
+    "storagesize":{
+        "description": "Local storage size consumed by db (MB), based on the local storage path",
+        "function": lambda true_distances, run_distances, metrics, times, run_attrs: storage_size(
+            true_distances, run_attrs
+        ),
+        "worst": float("inf"),
+    }
 }

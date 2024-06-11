@@ -220,9 +220,13 @@ function"""
             
             descriptor, results = run_individual_query(algo, X_train, X_test, distance, count, run_count, batch)
 
+            # calculate storage size
+            storage_size = algo.get_disk_usage()
+
             descriptor.update({
                 "build_time": build_time,
                 "index_size": index_size,
+                "storage_size": storage_size,
                 "algo": definition.algorithm,
                 "dataset": dataset_name
             })
