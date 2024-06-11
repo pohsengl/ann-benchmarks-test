@@ -5,12 +5,16 @@ from elasticsearch.helpers import bulk
 
 from ..base.module import BaseANN
 
+from pathlib import Path
+
 
 class ElasticsearchKNN(BaseANN):
     """Elasticsearch KNN search.
 
     See https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html for more details.
     """
+    
+    dir_path = "/usr/share/elasticsearch/data" # this is set explicitly in dockerfile
 
     def __init__(self, metric: str, dimension: int, index_options: dict):
         self.metric = metric

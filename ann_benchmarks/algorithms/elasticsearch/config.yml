@@ -10,7 +10,8 @@ float:
       m-16-ef-100:
         arg_groups: [{ef_construction: 100, m: 16}]
         args: {}
-        query_args: [[10, 20, 40, 80, 160]]
+        #query_args: [[10, 20, 40, 80, 160]] Note: this is the efsearch in hnsw params
+        query_args: [[ 40 ]]
   euclidean:
   - base_args: ['@metric', '@dimension']
     constructor: ElasticsearchKNN
@@ -22,4 +23,5 @@ float:
       m-16-ef-100:
         arg_groups: [{ef_construction: 100, m: 16}]
         args: {}
-        query_args: [[10, 20, 40, 80, 160]]
+        #query_args: [[10, 20, 40, 80, 160]]
+        query_args: [[ 40 ]]
