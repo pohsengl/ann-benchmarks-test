@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional
 import psutil
 
 import numpy
+from pathlib import Path
 
 class BaseANN(object):
     """Base class/interface for Approximate Nearest Neighbors (ANN) algorithms used in benchmarking."""
@@ -12,6 +13,8 @@ class BaseANN(object):
         pass
 
     def get_disk_usage(self):
+        if hasattr(self, 'dir_path') and self.dir_path is not None:
+            return sum(f.stat().st_size for f in Path(self.dir_path).rglob("*")) / 1024 / 1024
         return -1.0
 
     def get_memory_usage(self) -> Optional[float]:

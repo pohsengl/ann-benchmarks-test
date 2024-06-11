@@ -222,6 +222,7 @@ function"""
 
             # calculate storage size
             storage_size = algo.get_disk_usage()
+            print("Storage size for this run: ", storage_size)
 
             descriptor.update({
                 "build_time": build_time,
