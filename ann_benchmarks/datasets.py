@@ -598,6 +598,9 @@ DATASETS: Dict[str, Callable[[str], None]] = {
     "movielens1m-jaccard": movielens1m,
     "movielens10m-jaccard": movielens10m,
     "movielens20m-jaccard": movielens20m,
+    "dbpedia-openai-100k-1536-angular": None,
+    "dbpedia-openai-1M-1536-angular": None,
+    "arxiv-titles-384-angular-no-filters": None
 }
 
 DATASETS.update({
