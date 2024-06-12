@@ -10,6 +10,9 @@ from ..base.module import BaseANN
 
 
 class Weaviate(BaseANN):
+
+    dir_path = None
+    
     def __init__(self, metric, max_connections, ef_construction=512):
         self.class_name = "Vector"
         self.client = weaviate.Client(embedded_options=EmbeddedOptions(version="1.19.0-beta.1"))
