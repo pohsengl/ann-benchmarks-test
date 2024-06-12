@@ -9,6 +9,9 @@ from ..base.module import BaseANN
 # To use nearest neighbor search in a Vespa application,
 # see https://docs.vespa.ai/en/approximate-nn-hnsw.html for more details.
 class VespaHnswBase(BaseANN):
+
+    dir_path = None
+
     def __init__(self, enable_normalize, metric, dimension, param):
         if metric not in ("angular", "euclidean"):
             raise NotImplementedError("VespaHnsw doesn't support metric %s" % metric)
