@@ -3,7 +3,7 @@ import sys
 import uuid
 
 import weaviate
-from weaviate.embedded import EmbeddedOptions
+from weaviate.embedded import EmbeddedOptions, DEFAULT_PERSISTENCE_DATA_PATH
 from weaviate.util import generate_uuid5
 
 from ..base.module import BaseANN
@@ -11,8 +11,8 @@ from ..base.module import BaseANN
 
 class Weaviate(BaseANN):
 
-    dir_path = None
-    
+    dir_path = DEFAULT_PERSISTENCE_DATA_PATH
+
     def __init__(self, metric, max_connections, ef_construction=512):
         self.class_name = "Vector"
         self.client = weaviate.Client(embedded_options=EmbeddedOptions(version="1.19.0-beta.1"))
