@@ -10,6 +10,7 @@ import colors
 import docker
 import numpy
 import psutil
+import queue
 
 from ann_benchmarks.algorithms.base.module import BaseANN
 
@@ -184,6 +185,40 @@ def build_index(algo: BaseANN, X_train: numpy.ndarray) -> Tuple:
 
     return build_time, index_size
 
+def get_total_memory_usage():
+    """Get the total memory usage of all processes in the container."""
+    total_memory = 0
+    for proc in psutil.process_iter(['pid', 'memory_info']):
+        try:
+            mem_info = proc.info['memory_info']
+            total_memory += mem_info.rss  # Resident Set Size
+        except psutil.NoSuchProcess:
+            continue
+    return total_memory
+
+def monitor_memory_usage(duration, interval, result_queue, event):
+    """Monitor the peak memory usage over a specified duration."""
+    peak_memory_usage = 0
+    start_time = time.time()
+
+    while time.time() - start_time < duration and not event.is_set():
+        current_memory_usage = get_total_memory_usage()
+        print("Current memory usage: ", current_memory_usage)
+        if current_memory_usage > peak_memory_usage:
+            peak_memory_usage = current_memory_usage
+        time.sleep(interval)  # Adjust the sleep interval as needed
+
+    # Put the result in the queue
+    result_queue.put(peak_memory_usage)
+
+def start_monitoring(duration, interval=1):
+    """Start the monitoring thread."""
+    result_queue = queue.Queue()
+    event = threading.Event()
+    monitor_thread = threading.Thread(target=monitor_memory_usage, args=(duration, interval, result_queue, event))
+    monitor_thread.daemon = True  # Ensure the thread is daemon
+    monitor_thread.start()
+    return monitor_thread, result_queue, event
 
 def run(definition: Definition, dataset_name: str, count: int, run_count: int, batch: bool) -> None:
     """Run the algorithm benchmarking.
@@ -195,6 +230,10 @@ def run(definition: Definition, dataset_name: str, count: int, run_count: int, b
         run_count (int): The number of runs.
         batch (bool): If true, runs in batch mode.
     """
+    monitor_duration = 3600*2  # same as default timeout value
+    monitor_interval = 3    # Check memory usage every second
+    monitoring_thread, result_queue, event = start_monitoring(monitor_duration, monitor_interval)
+
     algo = instantiate_algorithm(definition)
     assert not definition.query_argument_groups or hasattr(
         algo, "set_query_arguments"
@@ -224,10 +263,23 @@ function"""
             storage_size = algo.get_disk_usage()
             print("Storage size for this run: ", storage_size)
 
+            # Notify the monitoring thread to stop and retrieve the peak memory
+            event.set()
+
+            # Get the peak memory usage from the queue
+            peak_memory = result_queue.get(timeout=2)
+            # convert to kB
+            peak_memory = peak_memory / 1024
+            print(f"Peak memory usage: {peak_memory} kB")
+
+            # Wait for the monitoring thread to finish
+            monitoring_thread.join()
+
             descriptor.update({
                 "build_time": build_time,
                 "index_size": index_size,
                 "storage_size": storage_size,
+                "peak_memory": peak_memory,
                 "algo": definition.algorithm,
                 "dataset": dataset_name
             })
