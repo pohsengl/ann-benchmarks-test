@@ -13,6 +13,9 @@ def metric_mapping(_metric: str):
 
 
 class Milvus(BaseANN):
+
+    dir_path = "./volumes"
+
     def __init__(self, metric, dim, index_param):
         self._metric = metric
         self._dim = dim

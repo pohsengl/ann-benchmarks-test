@@ -2,7 +2,7 @@ float:
   any:
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusFLAT
-      disabled: false
+      disabled: true
       docker_tag: ann-benchmarks-milvus
       module: ann_benchmarks.algorithms.milvus
       name: milvus-flat
@@ -19,8 +19,10 @@ float:
       run_groups:
         IVFFLAT:
           args:
-            nlist: [128, 256, 512, 1024, 2048, 4096]
-          query_args: [[1, 10, 20, 50, 100]]
+            # nlist: [128, 256, 512, 1024, 2048, 4096]
+            nlist: [512]
+          # query_args: [[1, 10, 20, 50, 100]]
+          query_args: [[10]]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusIVFSQ8
       disabled: false
@@ -30,8 +32,10 @@ float:
       run_groups:
         IVFSQ8:
           args:
-            nlist: [128, 256, 512, 1024, 2048, 4096]
-          query_args: [[1, 10, 20, 50, 100]]
+            # nlist: [128, 256, 512, 1024, 2048, 4096]
+            nlist: [512]
+          # query_args: [[1, 10, 20, 50, 100]]
+          query_args: [[10]]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusIVFPQ
       disabled: false
@@ -41,9 +45,12 @@ float:
       run_groups:
         IVFPQ:
           args:
-            nlist: [128, 256, 512, 1024, 2048, 4096]
-            m: [2, 4]
-          query_args: [[1, 10, 20, 50, 100]]
+            # nlist: [128, 256, 512, 1024, 2048, 4096]
+            nlist: [512]
+            # m: [2, 4]
+            m: [2]
+          # query_args: [[1, 10, 20, 50, 100]]
+          query_args: [[10]]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusHNSW
       disabled: false
@@ -53,9 +60,12 @@ float:
       run_groups:
         HNSW:
           args:
-            M: [4, 8, 12, 16, 24, 36, 48, 64, 96]
-            efConstruction: [200, 500]
-          query_args: [[10, 20, 40, 80, 120, 200, 400, 600, 800]]
+            # M: [4, 8, 12, 16, 24, 36, 48, 64, 96]
+            M: [16]
+            # efConstruction: [200, 500]
+            efConstruction: [100]
+          # query_args: [[10, 20, 40, 80, 120, 200, 400, 600, 800]] # ef
+          query_args: [[40]]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusSCANN
       disabled: false
@@ -65,5 +75,7 @@ float:
       run_groups:
         SCANN:
           args:
-            nlist: [64, 128, 256, 512, 1024, 2048, 4096, 8192]
-          query_args: [[1, 10, 20, 30, 50]]
+            # nlist: [64, 128, 256, 512, 1024, 2048, 4096, 8192]
+            nlist: [512]
+          # query_args: [[1, 10, 20, 30, 50]]
+          query_args: [[10]]
