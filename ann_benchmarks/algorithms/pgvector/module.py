@@ -8,6 +8,9 @@ from ..base.module import BaseANN
 
 
 class PGVector(BaseANN):
+
+    dir_path = "/var/lib/postgresql/16/main"
+    
     def __init__(self, metric, method_param):
         self._metric = metric
         self._m = method_param['M']
