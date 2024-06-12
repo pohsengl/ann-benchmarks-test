@@ -332,6 +332,7 @@ def run_docker(
             os.path.abspath("ann_benchmarks"): {"bind": "/home/app/ann_benchmarks", "mode": "ro"},
             os.path.abspath("data"): {"bind": "/home/app/data", "mode": "ro"},
             os.path.abspath("results"): {"bind": "/home/app/results", "mode": "rw"},
+            os.path.abspath("/tmp"): {"bind": "/tmp", "mode": "rw"},
         },
         network_mode="host",
         cpuset_cpus=cpu_limit,

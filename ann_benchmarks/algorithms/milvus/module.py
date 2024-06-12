@@ -14,7 +14,7 @@ def metric_mapping(_metric: str):
 
 class Milvus(BaseANN):
 
-    dir_path = "./volumes"
+    dir_path = "/tmp/volumes"
 
     def __init__(self, metric, dim, index_param):
         self._metric = metric
@@ -40,6 +40,9 @@ class Milvus(BaseANN):
 
     def start_milvus(self):
         try:
+            # remove dir path if exists
+            if os.path.exists(self.dir_path):
+                os.system(f"rm -rf {self.dir_path}")
             os.system("docker compose down")
             os.system("docker compose up -d")
             print("[Milvus] docker compose up successfully!!!")
