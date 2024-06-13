@@ -11,7 +11,9 @@ from ..base.module import BaseANN
 
 class Weaviate(BaseANN):
 
-    dir_path = DEFAULT_PERSISTENCE_DATA_PATH
+    dir_path = {
+        "total": DEFAULT_PERSISTENCE_DATA_PATH
+    }
 
     def __init__(self, metric, max_connections, ef_construction=512):
         self.class_name = "Vector"

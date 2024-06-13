@@ -13,8 +13,10 @@ class ElasticsearchKNN(BaseANN):
 
     See https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html for more details.
     """
-    
-    dir_path = "/usr/share/elasticsearch/data" # this is set explicitly in dockerfile
+
+    dir_path = {
+        "total":"/usr/share/elasticsearch/data" # this is set explicitly in dockerfile
+    }
 
     def __init__(self, metric: str, dimension: int, index_options: dict):
         self.metric = metric

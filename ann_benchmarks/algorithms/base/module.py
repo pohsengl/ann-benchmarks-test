@@ -14,8 +14,16 @@ class BaseANN(object):
 
     def get_disk_usage(self):
         if hasattr(self, 'dir_path') and self.dir_path is not None:
-            return sum(f.stat().st_size for f in Path(self.dir_path).rglob("*")) / 1024 / 1024
-        return -1.0
+            assert isinstance(self.dir_path, dict), "dir_path must be a dictionary"
+
+            if len(self.dir_path) > 0:
+                result_str = []
+                for key in self.dir_path:
+                    folder_size = sum(f.stat().st_size for f in Path(self.dir_path[key]).rglob("*")) / 1024 / 1024
+                    result_str.append(f"{key}: {folder_size:.2f}")
+                return ", ".join(result_str)
+
+        return f"total: -1.0"
 
     def get_memory_usage(self) -> Optional[float]:
         """Returns the current memory usage of this ANN algorithm instance in kilobytes.

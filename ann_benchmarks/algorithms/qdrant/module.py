@@ -25,7 +25,9 @@ BATCH_SIZE = 128
 
 class Qdrant(BaseANN):
 
-    dir_path = "/qdrant/storage"
+    dir_path = {
+        "total": "/qdrant/storage"
+    }
 
     _distances_mapping = {"dot": Distance.DOT, "angular": Distance.COSINE, "euclidean": Distance.EUCLID}
 

@@ -10,7 +10,9 @@ from ..base.module import BaseANN
 # see https://docs.vespa.ai/en/approximate-nn-hnsw.html for more details.
 class VespaHnswBase(BaseANN):
 
-    dir_path = "/opt/vespa"
+    dir_path = {
+        "total": "/opt/vespa"
+    }
 
     def __init__(self, enable_normalize, metric, dimension, param):
         if metric not in ("angular", "euclidean"):
