@@ -9,7 +9,13 @@ from ..base.module import BaseANN
 
 class PGVector(BaseANN):
 
-    dir_path = "/var/lib/postgresql/16/main"
+    dir_path = {
+        "total": "/var/lib/postgresql/16/main",
+        "data":"/var/lib/postgresql/16/main/base",
+        "wal": "/var/lib/postgresql/16/main/pg_wal"
+        }
+    # SELECT datname, pg_size_pretty(pg_database_size(datname)) AS size
+    # FROM pg_database;
     
     def __init__(self, metric, method_param):
         self._metric = metric
