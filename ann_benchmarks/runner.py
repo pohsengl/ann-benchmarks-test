@@ -267,7 +267,7 @@ function"""
             event.set()
 
             # Get the peak memory usage from the queue
-            peak_memory = result_queue.get(timeout=2)
+            peak_memory = result_queue.get(timeout=15)
             # convert to kB
             peak_memory = peak_memory / 1024
             print(f"Peak memory usage: {peak_memory} kB")
