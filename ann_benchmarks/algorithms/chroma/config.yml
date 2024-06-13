@@ -1,6 +1,17 @@
 float:
   angular:
-  - base_args: []
+  - base_args: ['@metric']
+    constructor: ChromaBase
+    disabled: false
+    docker_tag: ann-benchmarks-chroma
+    module: ann_benchmarks.algorithms.chroma
+    name: chroma
+    run_groups:
+      default:
+        args: []
+        query_args: []
+  euclidean:
+  - base_args: ['@metric']
     constructor: ChromaBase
     disabled: false
     docker_tag: ann-benchmarks-chroma

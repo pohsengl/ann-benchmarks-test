@@ -13,7 +13,17 @@ class ChromaBase(BaseANN):
         "total": str(Path.home() / "chromadb_data")
     }
 
-    def __init__(self) -> None:
+    def __init__(self, metric) -> None:
+
+        supported_metrics = {
+            "angular": "cosine",
+            "euclidean": "l2",
+        }
+        if metric not in supported_metrics:
+            raise NotImplementedError(f"{metric} is not implemented")
+        
+        distance_metric = supported_metrics[metric]
+    
         # start chromadb
         chroma_port = 8010
 
@@ -28,7 +38,7 @@ class ChromaBase(BaseANN):
         time.sleep(5)
 
         self._client = chromadb.HttpClient(host="localhost", port=chroma_port)
-        self._collection = self._client.create_collection(name="benchmark")
+        self._collection = self._client.create_collection(name="benchmark", metadata={"hnsw:space": distance_metric})
         print("Chroma collection created")
 
     def fit(self, X) -> None:
