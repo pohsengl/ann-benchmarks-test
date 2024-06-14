@@ -252,7 +252,22 @@ function"""
 
         query_argument_groups = definition.query_argument_groups or [[]]  # Ensure at least one iteration
 
+        # Notify the monitoring thread to stop and retrieve the peak memory
+        event.set()
+
+        # Wait for the monitoring thread to finish
+        monitoring_thread.join()
+
+        # Get the peak memory usage from the queue
+        peak_memory = result_queue.get_nowait()
+        # convert to kB
+        peak_memory = peak_memory / 1024
+        print(f"Peak memory usage for indexing: {peak_memory} kB")
+
         for pos, query_arguments in enumerate(query_argument_groups, 1):
+            # start a monitoring thread for query memory usage
+            query_monitoring_thread, query_result_queue, query_event = start_monitoring(monitor_duration, monitor_interval)
+
             print(f"Running query argument group {pos} of {len(query_argument_groups)}...")
             if query_arguments:
                 algo.set_query_arguments(*query_arguments)
@@ -264,22 +279,23 @@ function"""
             print("Storage size for this run: ", storage_size)
 
             # Notify the monitoring thread to stop and retrieve the peak memory
-            event.set()
-
-            # Get the peak memory usage from the queue
-            peak_memory = result_queue.get(timeout=15)
-            # convert to kB
-            peak_memory = peak_memory / 1024
-            print(f"Peak memory usage: {peak_memory} kB")
+            query_event.set()
 
             # Wait for the monitoring thread to finish
-            monitoring_thread.join()
+            query_monitoring_thread.join()
+
+            # Get the peak memory usage from the queue
+            peak_memory_query = query_result_queue.get_nowait()
+            # convert to kB
+            peak_memory_query = peak_memory_query / 1024
+            print(f"Peak memory usage for query: {peak_memory_query} kB")
 
             descriptor.update({
                 "build_time": build_time,
                 "index_size": index_size,
                 "storage_size": storage_size,
                 "peak_memory": peak_memory,
+                "peak_memory_query": peak_memory_query,
                 "algo": definition.algorithm,
                 "dataset": dataset_name
             })

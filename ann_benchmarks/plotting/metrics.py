@@ -97,6 +97,9 @@ def storage_size(queries, attrs):
 def peak_memory(queries, attrs):
     return attrs.get("peak_memory", 0)
 
+def peak_memory_query(queries, attrs):
+    return attrs.get("peak_memory_query", 0)
+
 def build_time(queries, attrs):
     return attrs["build_time"]
 
@@ -218,6 +221,13 @@ all_metrics = {
     "peakmemory": {
         "description": "Peak memory usage (kB)",
         "function": lambda true_distances, run_distances, metrics, times, run_attrs: peak_memory(
+            true_distances, run_attrs
+        ),
+        "worst": float("inf"),
+    },
+    "peakmemory-query": {
+        "description": "Peak memory usage for query (kB)",
+        "function": lambda true_distances, run_distances, metrics, times, run_attrs: peak_memory_query(
             true_distances, run_attrs
         ),
         "worst": float("inf"),
