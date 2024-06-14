@@ -12,7 +12,7 @@ float:
             placeholder: [0]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusIVFFLAT
-      disabled: false
+      disabled: true
       docker_tag: ann-benchmarks-milvus
       module: ann_benchmarks.algorithms.milvus
       name: milvus-ivfflat
@@ -25,7 +25,7 @@ float:
           query_args: [[10]]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusIVFSQ8
-      disabled: false
+      disabled: true
       docker_tag: ann-benchmarks-milvus
       module: ann_benchmarks.algorithms.milvus
       name: milvus-ivfsq8
@@ -38,7 +38,7 @@ float:
           query_args: [[10]]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusIVFPQ
-      disabled: false
+      disabled: true
       docker_tag: ann-benchmarks-milvus
       module: ann_benchmarks.algorithms.milvus
       name: milvus-ivfpq
@@ -60,15 +60,15 @@ float:
       run_groups:
         HNSW:
           args:
-            # M: [4, 8, 12, 16, 24, 36, 48, 64, 96]
-            M: [16]
-            # efConstruction: [200, 500]
-            efConstruction: [100]
-          # query_args: [[10, 20, 40, 80, 120, 200, 400, 600, 800]] # ef
-          query_args: [[40]]
+            M: [4, 8, 12, 16, 24, 36, 48, 64, 96]
+            # M: [16]
+            efConstruction: [100, 200, 500]
+            # efConstruction: [100]
+          query_args: [[10, 20, 40, 80, 120, 200, 400, 600, 800]] # ef
+          # query_args: [[40]]
     - base_args: ["@metric", "@dimension"]
       constructor: MilvusSCANN
-      disabled: false
+      disabled: true
       docker_tag: ann-benchmarks-milvus
       module: ann_benchmarks.algorithms.milvus
       name: milvus-scann

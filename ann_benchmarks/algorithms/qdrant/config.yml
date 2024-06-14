@@ -9,16 +9,16 @@ float:
     run_groups:
       default:
         args: [
-          # ['none', 'scalar', 'binary'], #quantization
-          ['none'], #quantization
-          # [ 8, 16, 24, 32, 40, 48, 64, 72 ], #m
-          [ 16 ], #m
-          # [ 64, 128, 256, 512 ], #ef_construct
-          [ 100 ], #ef_construct
+          ['none', 'scalar', 'binary'], #quantization
+          # ['none'], #quantization
+          [ 16, 32, 48, 72 ], #m
+          # [ 16 ], #m
+          [ 64, 100, 128, 256, 512 ], #ef_construct
+          # [ 100 ], #ef_construct
         ]
         query_args: [
-          # [null, 8, 16, 32, 64, 128, 256, 512, 768], #hnsw_ef
-          [40], #hnsw_ef
-          # [True, False], # re-score
-          [False], # re-score
+          [null, 8, 16, 32, 40, 64, 128, 256, 512, 768], #hnsw_ef
+          # [40], #hnsw_ef
+          [True, False], # re-score
+          # [False], # re-score
         ]
