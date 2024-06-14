@@ -11,7 +11,7 @@ float:
         args: [
           ['none', 'scalar', 'binary'], #quantization
           # ['none'], #quantization
-          [ 16, 32, 48, 72 ], #m
+          [ 8, 16, 24, 32, 40, 48, 64, 72 ], #m
           # [ 16 ], #m
           [ 64, 100, 128, 256, 512 ], #ef_construct
           # [ 100 ], #ef_construct
